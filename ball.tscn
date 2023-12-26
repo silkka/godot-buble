@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://ct4i4qj78ewp2"]
+
+[ext_resource type="Script" path="res://Ball.cs" id="1_thsfv"]
+[ext_resource type="Texture2D" uid="uid://dtvthe4v2id1t" path="res://art/ball_black.png" id="2_t2u3r"]
+[ext_resource type="Texture2D" uid="uid://d4i4brpa78olw" path="res://art/ball_blue.png" id="3_ue67h"]
+[ext_resource type="Texture2D" uid="uid://ygrvguv6pbau" path="res://art/ball_green.png" id="4_01maw"]
+[ext_resource type="Texture2D" uid="uid://dywvc4krndysh" path="res://art/ball_orange.png" id="5_uhnfc"]
+[ext_resource type="Texture2D" uid="uid://enjighbtmu4s" path="res://art/ball_purple.png" id="6_4xyfm"]
+[ext_resource type="Texture2D" uid="uid://2au17n1kg0wb" path="res://art/ball_red.png" id="7_t57tu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jpbaj"]
+radius = 12.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k2iux"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_t2u3r")
+}],
+"loop": true,
+"name": &"black",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ue67h")
+}],
+"loop": true,
+"name": &"blue",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_01maw")
+}],
+"loop": true,
+"name": &"green",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_uhnfc")
+}],
+"loop": true,
+"name": &"orange",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_4xyfm")
+}],
+"loop": true,
+"name": &"purple",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_t57tu")
+}],
+"loop": true,
+"name": &"red",
+"speed": 0.0
+}]
+
+[node name="Ball" type="Area2D"]
+script = ExtResource("1_thsfv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jpbaj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_k2iux")
+animation = &"orange"
