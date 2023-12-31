@@ -93,7 +93,7 @@ public partial class Ball : Area2D
             "green" => Ball_Colors.green,
             "orange" => Ball_Colors.orange,
             "purple" => Ball_Colors.purple,
-            _ => Ball_Colors.blue,
+            _ => throw new Exception($"Invalid color: {color}"),
         };
     }
 
