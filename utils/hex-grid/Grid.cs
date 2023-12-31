@@ -46,7 +46,6 @@ namespace HexGrid
                 int r_offset = r >> 1;
                 for (int q = -r_offset; q < width - r_offset - (r % 2); q++)
                 {
-                    GD.Print(q, r);
                     Hex hex = new(q, r);
                     grid.Add(hex, null);
                 }

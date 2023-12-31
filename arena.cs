@@ -22,7 +22,7 @@ public partial class Arena : Node2D
             ball.SetRandomColor();
             ball.Position = Layout.HexToPixel(grid.layout, hex);
             grid.Set(hex, ball);
-            AddChild(ball);
+            CallDeferred("add_sibling", ball);
         }
 
         colors = new Color[6]
@@ -46,5 +46,17 @@ public partial class Arena : Node2D
             Vector2[] points = Layout.PolygonCorners(grid.layout, hex);
             // DrawPolygon(points, colors);
         }
+    }
+
+    public void AddBall(Vector2 position, string color)
+    {
+        Hex hex = FractionalHex.HexRound(Layout.PixelToHex(grid.layout, position));
+
+        Ball ball = Ball_Scene.Instantiate<Ball>();
+        ball.SetColor(color);
+        ball.Position = Layout.HexToPixel(grid.layout, hex);
+
+        grid.Set(hex, ball);
+        AddSibling(ball);
     }
 }

@@ -10,7 +10,7 @@ public partial class Ball : Area2D
     public bool Active = false;
 
     [Signal]
-    public delegate void HitEventHandler(Vector2 position);
+    public delegate void HitEventHandler(Vector2 position, string color);
 
     public enum Ball_Colors
     {
@@ -32,9 +32,10 @@ public partial class Ball : Area2D
     private void OnAreaEntered(Node2D body)
     {
         Veclocity = Vector2.Zero;
-        EmitSignal(SignalName.Hit, Position);
         if (Active)
         {
+            Active = false;
+            EmitSignal(SignalName.Hit, Position, Ball_Color.ToString());
             QueueFree();
         }
     }
@@ -80,5 +81,24 @@ public partial class Ball : Area2D
                 break;
         }
         return this;
+    }
+
+    public static Ball_Colors BallColorFromString(string color)
+    {
+        return color switch
+        {
+            "blue" => Ball_Colors.blue,
+            "black" => Ball_Colors.black,
+            "red" => Ball_Colors.red,
+            "green" => Ball_Colors.green,
+            "orange" => Ball_Colors.orange,
+            "purple" => Ball_Colors.purple,
+            _ => Ball_Colors.blue,
+        };
+    }
+
+    public void SetColor(string color)
+    {
+        SetColor(BallColorFromString(color));
     }
 }
