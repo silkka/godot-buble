@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdw6ifwy6cclm"]
+[gd_scene load_steps=4 format=3 uid="uid://bdw6ifwy6cclm"]
 
+[ext_resource type="Script" path="res://game.cs" id="1_7xcoi"]
 [ext_resource type="PackedScene" uid="uid://bej6e0ymv421c" path="res://shooter.tscn" id="1_h2etr"]
+[ext_resource type="PackedScene" uid="uid://b6gxitdwgg5rp" path="res://arena.tscn" id="2_6q8t7"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_7xcoi")
 
 [node name="Shooter" parent="." instance=ExtResource("1_h2etr")]
-position = Vector2(147, 570)
+position = Vector2(150, 457)
+
+[node name="Arena" parent="." instance=ExtResource("2_6q8t7")]
+position = Vector2(32, 43)
