@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
-namespace Game;
-
 public partial class Ball : Area2D
 {
     public Vector2 Veclocity = Vector2.Zero;
     public Ball_Colors Ball_Color;
     public bool Active = false;
+
+    [Signal]
+    public delegate void HitEventHandler(Vector2 position);
 
     public enum Ball_Colors
     {
@@ -31,6 +32,7 @@ public partial class Ball : Area2D
     private void OnAreaEntered(Node2D body)
     {
         Veclocity = Vector2.Zero;
+        EmitSignal(SignalName.Hit, Position);
         if (Active)
         {
             QueueFree();

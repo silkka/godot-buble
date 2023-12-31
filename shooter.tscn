@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://bej6e0ymv421c"]
 
-[ext_resource type="Script" path="res://shooter.cs" id="1_yadgn"]
+[ext_resource type="Script" path="res://Shooter.cs" id="1_m8cj3"]
 [ext_resource type="Texture2D" uid="uid://ctrfl0xvn5el4" path="res://art/arrow.png" id="2_anr5i"]
 [ext_resource type="PackedScene" uid="uid://ct4i4qj78ewp2" path="res://ball.tscn" id="2_p3ell"]
 
 [node name="Shooter" type="Node2D"]
-script = ExtResource("1_yadgn")
+script = ExtResource("1_m8cj3")
 Ball_Scene = ExtResource("2_p3ell")
 
 [node name="ShooterSprite" type="Sprite2D" parent="."]

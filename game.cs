@@ -1,8 +1,6 @@
 using System;
 using Godot;
 
-namespace Game;
-
 public partial class Game : Node2D
 {
     // Called when the node enters the scene tree for the first time.

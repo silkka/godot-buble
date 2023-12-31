@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Game;
 using Godot;
 
 namespace HexGrid

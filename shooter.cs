@@ -1,16 +1,16 @@
 using System;
-using System.IO;
 using Godot;
 
-namespace Game;
-
-public partial class shooter : Node2D
+public partial class Shooter : Node2D
 {
     [Export]
     PackedScene Ball_Scene;
     private float RotationSpeed = 2;
     private const float MAX_TURN = MathF.PI / 2 - MathF.PI / 16;
     private const float MIN_TURN = -MathF.PI / 2 + MathF.PI / 16;
+
+    // [Signal]
+    // public delegate void HitEventHandler(Vector2 position);
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() { }
@@ -37,6 +37,12 @@ public partial class shooter : Node2D
             ball.Position = Position;
             ball.Active = true;
             AddSibling(ball);
+            ball.Hit += OnHit;
         }
+    }
+
+    public void OnHit(Vector2 position)
+    {
+        GD.Print("Hit at", position);
     }
 }
