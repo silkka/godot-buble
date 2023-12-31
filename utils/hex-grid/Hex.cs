@@ -146,5 +146,22 @@ namespace HexGrid
 
             return new Hex(qi, ri);
         }
+
+        public static FractionalHex HexLerp(Hex a, Hex b, float t)
+        {
+            return new FractionalHex(a.Q * (1.0f - t) + b.Q * t, a.R * (1.0f - t) + b.R * t);
+        }
+
+        public static Hex[] HexLinedraw(Hex a, Hex b)
+        {
+            int N = a.Distance(b);
+            Hex[] results = new Hex[N + 1];
+            float step = 1.0f / Math.Max(N, 1);
+            for (int i = 0; i <= N; i++)
+            {
+                results[i] = HexRound(HexLerp(a, b, step * i));
+            }
+            return results;
+        }
     }
 }
