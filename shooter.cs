@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using Godot;
 
+namespace Game;
+
 public partial class shooter : Node2D
 {
     [Export]
@@ -33,6 +35,7 @@ public partial class shooter : Node2D
             var ball = Ball_Scene.Instantiate<Ball>().SetRandomColor();
             ball.Veclocity = Vector2.FromAngle(Rotation - MathF.PI / 2) * 200f;
             ball.Position = Position;
+            ball.Active = true;
             AddSibling(ball);
         }
     }

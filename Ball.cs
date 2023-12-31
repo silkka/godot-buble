@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
+namespace Game;
+
 public partial class Ball : Area2D
 {
     public Vector2 Veclocity = Vector2.Zero;
     public Ball_Colors Ball_Color;
+    public bool Active = false;
 
     public enum Ball_Colors
     {
@@ -19,7 +22,20 @@ public partial class Ball : Area2D
     }
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready() { }
+    public override void _Ready()
+    {
+        // Connections
+        AreaEntered += OnAreaEntered;
+    }
+
+    private void OnAreaEntered(Node2D body)
+    {
+        Veclocity = Vector2.Zero;
+        if (Active)
+        {
+            QueueFree();
+        }
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)

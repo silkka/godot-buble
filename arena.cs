@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Godot;
 using HexGrid;
 
+namespace Game;
+
 public partial class Arena : Node2D
 {
     [Export]
