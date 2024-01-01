@@ -41,15 +41,6 @@ public partial class Arena : Node2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
 
-    public override void _Draw()
-    {
-        // foreach (Hex hex in grid.GetHexes())
-        // {
-        //     Vector2[] points = Layout.PolygonCorners(grid.layout, hex);
-        //     // DrawPolygon(points, colors);
-        // }
-    }
-
     public void AddBall(Vector2 position, string color)
     {
         Hex hex = FractionalHex.HexRound(Layout.PixelToHex(grid.layout, position));
@@ -65,8 +56,6 @@ public partial class Arena : Node2D
         List<Hex> matches = new List<Hex>();
         CheckForMatches(hex, Ball.BallColorFromString(color), matches);
 
-        GD.Print($"Found {matches.Count} matches, for {color}");
-
         if (matches.Count < 3)
         {
             return;
@@ -74,7 +63,6 @@ public partial class Arena : Node2D
 
         foreach (Hex match in matches)
         {
-            GD.Print($"Removing {match.Q}, {match.R}");
             grid.Get(match).QueueFree();
             grid.Remove(match);
         }
@@ -82,7 +70,6 @@ public partial class Arena : Node2D
         RemoveUnconnected();
     }
 
-    // Check for connected balls of the same color
     public void CheckForMatches(
         Hex hex,
         Ball.Ball_Colors color,
