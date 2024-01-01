@@ -38,8 +38,11 @@ public partial class Shooter : Node2D
             ball.Active = true;
             AddSibling(ball);
 
-            Game game = GetParent<Game>();
-            ball.Hit += game.OnHit;
+            Game game = GetParentOrNull<Game>();
+            if (game != null)
+            {
+                ball.Hit += game.OnHit;
+            }
         }
     }
 }
