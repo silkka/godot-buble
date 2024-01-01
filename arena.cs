@@ -9,12 +9,14 @@ public partial class Arena : Node2D
 
     private Grid grid;
     private Color[] colors;
+    private const int WIDTH = 10;
+    private const int HEIGHT = 10;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         grid = new Grid(new Vector2(14, 14), Position);
-        grid.CreateRectangular(10, 10);
+        grid.CreateRectangular(WIDTH, HEIGHT);
 
         foreach (Hex hex in grid.GetHexes())
         {
@@ -56,12 +58,14 @@ public partial class Arena : Node2D
         ball.SetColor(color);
         ball.Position = Layout.HexToPixel(grid.layout, hex);
 
-        grid.Add(hex, ball);
+        grid.Set(hex, ball);
 
         CallDeferred(MethodName.AddSibling, ball);
 
         List<Hex> matches = new List<Hex>();
         CheckForMatches(hex, Ball.BallColorFromString(color), matches);
+
+        GD.Print($"Found {matches.Count} matches, for {color}");
 
         if (matches.Count < 3)
         {
@@ -70,19 +74,27 @@ public partial class Arena : Node2D
 
         foreach (Hex match in matches)
         {
+            GD.Print($"Removing {match.Q}, {match.R}");
             grid.Get(match).QueueFree();
             grid.Remove(match);
         }
+
+        RemoveUnconnected();
     }
 
     // Check for connected balls of the same color
-    public void CheckForMatches(Hex hex, Ball.Ball_Colors color, List<Hex> matches)
+    public void CheckForMatches(
+        Hex hex,
+        Ball.Ball_Colors color,
+        List<Hex> matches,
+        bool all = false
+    )
     {
         // Add self if match
         Ball ball = grid.Get(hex);
         if (ball != null)
         {
-            if (ball.Ball_Color == color)
+            if (all || ball.Ball_Color == color)
             {
                 matches.Add(hex);
             }
@@ -98,9 +110,35 @@ public partial class Arena : Node2D
 
             Ball n = grid.Get(neighbor);
 
-            if (n.Ball_Color == color && !matches.Contains(neighbor))
+            if ((all || n.Ball_Color == color) && !matches.Contains(neighbor))
             {
-                CheckForMatches(neighbor, color, matches);
+                CheckForMatches(neighbor, color, matches, all);
+            }
+        }
+    }
+
+    public void RemoveUnconnected()
+    {
+        Grid topRowGen = new(new(1, 1), Position);
+        topRowGen.CreateRectangular(WIDTH, 1);
+        List<Hex> topRow = topRowGen.GetHexes();
+
+        List<Hex> matches = new List<Hex>();
+
+        foreach (Hex hex in topRow)
+        {
+            if (grid.Contains(hex))
+            {
+                CheckForMatches(hex, Ball.Ball_Colors.red, matches, true);
+            }
+        }
+
+        foreach (Hex hex in grid.GetHexes())
+        {
+            if (!matches.Contains(hex))
+            {
+                grid.Get(hex).QueueFree();
+                grid.Remove(hex);
             }
         }
     }
