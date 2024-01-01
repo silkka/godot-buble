@@ -112,6 +112,16 @@ namespace HexGrid
         {
             return this + Direction(direction);
         }
+
+        public Hex[] Neighbors()
+        {
+            Hex[] neighbors = new Hex[6];
+            for (int i = 0; i < 6; i++)
+            {
+                neighbors[i] = Neighbor(i);
+            }
+            return neighbors;
+        }
     }
 
     public class FractionalHex

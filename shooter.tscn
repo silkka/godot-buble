@@ -10,3 +10,6 @@ Ball_Scene = ExtResource("2_p3ell")
 
 [node name="ShooterSprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_anr5i")
+
+[node name="Next" parent="." instance=ExtResource("2_p3ell")]
+position = Vector2(0, 31)

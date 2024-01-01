@@ -9,11 +9,17 @@ public partial class Shooter : Node2D
     private const float MAX_TURN = MathF.PI / 2 - MathF.PI / 16;
     private const float MIN_TURN = -MathF.PI / 2 + MathF.PI / 16;
 
+    private Ball Next;
+
     [Signal]
     public delegate void HitEventHandler(Vector2 position, string color);
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready() { }
+    public override void _Ready()
+    {
+        Next = GetNode<Ball>("Next");
+        Next.SetRandomColor();
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
@@ -32,17 +38,20 @@ public partial class Shooter : Node2D
 
         if (Input.IsActionJustPressed("shoot"))
         {
-            var ball = Ball_Scene.Instantiate<Ball>().SetRandomColor();
+            var ball = Ball_Scene.Instantiate<Ball>();
+            ball.SetColor(Next.Ball_Color);
             ball.Veclocity = Vector2.FromAngle(Rotation - MathF.PI / 2) * 200f;
             ball.Position = Position;
             ball.Active = true;
-            AddSibling(ball);
+            CallDeferred(MethodName.AddSibling, ball);
 
             Game game = GetParentOrNull<Game>();
             if (game != null)
             {
                 ball.Hit += game.OnHit;
             }
+
+            Next.SetRandomColor();
         }
     }
 }

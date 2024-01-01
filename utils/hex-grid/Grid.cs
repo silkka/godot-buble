@@ -34,6 +34,19 @@ namespace HexGrid
             return grid[hex];
         }
 
+        public List<Ball> Get(Hex[] hexes)
+        {
+            List<Ball> balls = new();
+            foreach (Hex hex in hexes)
+            {
+                if (grid.ContainsKey(hex))
+                {
+                    balls.Add(grid[hex]);
+                }
+            }
+            return balls;
+        }
+
         public void Set(Hex hex, Ball ball)
         {
             grid[hex] = ball;

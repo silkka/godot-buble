@@ -41,11 +41,11 @@ public partial class Arena : Node2D
 
     public override void _Draw()
     {
-        foreach (Hex hex in grid.GetHexes())
-        {
-            Vector2[] points = Layout.PolygonCorners(grid.layout, hex);
-            // DrawPolygon(points, colors);
-        }
+        // foreach (Hex hex in grid.GetHexes())
+        // {
+        //     Vector2[] points = Layout.PolygonCorners(grid.layout, hex);
+        //     // DrawPolygon(points, colors);
+        // }
     }
 
     public void AddBall(Vector2 position, string color)
@@ -56,7 +56,52 @@ public partial class Arena : Node2D
         ball.SetColor(color);
         ball.Position = Layout.HexToPixel(grid.layout, hex);
 
-        grid.Set(hex, ball);
+        grid.Add(hex, ball);
+
         CallDeferred(MethodName.AddSibling, ball);
+
+        List<Hex> matches = new List<Hex>();
+        CheckForMatches(hex, Ball.BallColorFromString(color), matches);
+
+        if (matches.Count < 3)
+        {
+            return;
+        }
+
+        foreach (Hex match in matches)
+        {
+            grid.Get(match).QueueFree();
+            grid.Remove(match);
+        }
+    }
+
+    // Check for connected balls of the same color
+    public void CheckForMatches(Hex hex, Ball.Ball_Colors color, List<Hex> matches)
+    {
+        // Add self if match
+        Ball ball = grid.Get(hex);
+        if (ball != null)
+        {
+            if (ball.Ball_Color == color)
+            {
+                matches.Add(hex);
+            }
+        }
+        Hex[] neighbors = hex.Neighbors();
+
+        foreach (Hex neighbor in neighbors)
+        {
+            if (!grid.Contains(neighbor))
+            {
+                continue;
+            }
+
+            Ball n = grid.Get(neighbor);
+
+            if (n.Ball_Color == color && !matches.Contains(neighbor))
+            {
+                CheckForMatches(neighbor, color, matches);
+            }
+        }
     }
 }
