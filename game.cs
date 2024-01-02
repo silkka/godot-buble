@@ -38,10 +38,6 @@ public partial class Game : Node2D
             GetTree().Quit();
         }
 
-        // Connections
-        Shooter shooter = (Shooter)GetNode("Shooter");
-        shooter.Hit += OnHit;
-
         if (Input.IsActionJustPressed("do_my_biding"))
         {
             arena.ShiftDown();

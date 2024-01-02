@@ -9,11 +9,9 @@ public partial class Shooter : Node2D
     private const float MAX_TURN = MathF.PI / 2 - MathF.PI / 16;
     private const float MIN_TURN = -MathF.PI / 2 + MathF.PI / 16;
     public (float, float) Bounds = (0f, 10000f);
+    private bool ReadyToShoot = true;
 
     private Ball Next;
-
-    [Signal]
-    public delegate void HitEventHandler(Vector2 position, string color);
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -37,12 +35,16 @@ public partial class Shooter : Node2D
 
         Rotation = Mathf.Clamp(Rotation, MIN_TURN, MAX_TURN);
 
-        if (Input.IsActionJustPressed("shoot"))
+        if (ReadyToShoot && Input.IsActionJustPressed("shoot"))
         {
+            ReadyToShoot = false;
+
             var ball = Ball_Scene.Instantiate<Ball>();
             ball.SetColor(Next.Ball_Color);
             ball.Shoot(Position, Rotation, Bounds);
             CallDeferred(MethodName.AddSibling, ball);
+
+            ball.Hit += OnHit;
 
             Game game = GetParentOrNull<Game>();
             if (game != null)
@@ -52,5 +54,10 @@ public partial class Shooter : Node2D
 
             Next.SetRandomColor();
         }
+    }
+
+    public void OnHit(Vector2 position, string color)
+    {
+        ReadyToShoot = true;
     }
 }
