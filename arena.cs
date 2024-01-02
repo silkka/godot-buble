@@ -8,7 +8,6 @@ public partial class Arena : Node2D
     PackedScene Ball_Scene;
 
     private Grid grid;
-    private Color[] colors;
     private const int WIDTH = 10;
     private const int HEIGHT = 10;
 
@@ -26,16 +25,6 @@ public partial class Arena : Node2D
             grid.Set(hex, ball);
             CallDeferred(MethodName.AddSibling, ball);
         }
-
-        colors = new Color[6]
-        {
-            Colors.Red,
-            Colors.Red,
-            Colors.Red,
-            Colors.Red,
-            Colors.Red,
-            Colors.Red
-        };
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
