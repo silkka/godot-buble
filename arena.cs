@@ -117,4 +117,14 @@ public partial class Arena : Node2D
             }
         }
     }
+
+    public void ShiftDown()
+    {
+        grid.ShiftDown();
+        foreach (Hex hex in grid.GetHexes())
+        {
+            Ball ball = grid.Get(hex);
+            ball.Position = Layout.HexToPixel(grid.layout, hex);
+        }
+    }
 }

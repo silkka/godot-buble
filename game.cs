@@ -41,6 +41,11 @@ public partial class Game : Node2D
         // Connections
         Shooter shooter = (Shooter)GetNode("Shooter");
         shooter.Hit += OnHit;
+
+        if (Input.IsActionJustPressed("do_my_biding"))
+        {
+            arena.ShiftDown();
+        }
     }
 
     public void OnHit(Vector2 position, string color)
@@ -56,14 +61,14 @@ public partial class Game : Node2D
     private void DrawBounds()
     {
         DrawLine(
-            new Vector2(shooter.Bounds.Item1, 0),
-            new Vector2(shooter.Bounds.Item1, 1000),
-            Colors.Red
+            new Vector2(shooter.Bounds.Item1 - 6, 0),
+            new Vector2(shooter.Bounds.Item1 - 6, 1000),
+            Colors.White
         );
         DrawLine(
-            new Vector2(shooter.Bounds.Item2, 0),
-            new Vector2(shooter.Bounds.Item2, 1000),
-            Colors.Red
+            new Vector2(shooter.Bounds.Item2 + 6, 0),
+            new Vector2(shooter.Bounds.Item2 + 6, 1000),
+            Colors.White
         );
     }
 }

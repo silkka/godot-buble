@@ -6,7 +6,7 @@ namespace HexGrid
     class Grid
     {
         private readonly Dictionary<Hex, Ball> grid;
-        public readonly Layout layout;
+        public Layout layout;
 
         public Grid(Vector2 size, Vector2 origin)
         {
@@ -68,6 +68,12 @@ namespace HexGrid
         public List<Hex> GetHexes()
         {
             return new List<Hex>(grid.Keys);
+        }
+
+        public void ShiftDown()
+        {
+            Vector2 shift = new(0, layout.Size.Y * 2);
+            layout = new Layout(layout.Orientation, layout.Size, layout.Origin + shift);
         }
     }
 }
