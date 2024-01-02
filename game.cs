@@ -5,11 +5,29 @@ using HexGrid;
 public partial class Game : Node2D
 {
     Arena arena;
+    Shooter shooter;
+
+    [Export]
+    int Width = 10;
+
+    [Export]
+    int Height = 10;
+
+    [Export]
+    Vector2 Size = new(14, 14);
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         arena = GetNode<Arena>("Arena");
+        shooter = GetNode<Shooter>("Shooter");
+
+        arena.Create(Width, Height, Size);
+        float leftEdge = arena.Position.X - 12;
+        float rightEdge = leftEdge + Width * 12 * 2;
+        shooter.Bounds = (leftEdge, rightEdge);
+
+        GD.Print(shooter.Bounds.Item1, ", ", shooter.Bounds.Item2);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -28,5 +46,24 @@ public partial class Game : Node2D
     public void OnHit(Vector2 position, string color)
     {
         arena.AddBall(position, color);
+    }
+
+    public override void _Draw()
+    {
+        DrawBounds();
+    }
+
+    private void DrawBounds()
+    {
+        DrawLine(
+            new Vector2(shooter.Bounds.Item1, 0),
+            new Vector2(shooter.Bounds.Item1, 1000),
+            Colors.Red
+        );
+        DrawLine(
+            new Vector2(shooter.Bounds.Item2, 0),
+            new Vector2(shooter.Bounds.Item2, 1000),
+            Colors.Red
+        );
     }
 }

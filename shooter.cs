@@ -8,6 +8,7 @@ public partial class Shooter : Node2D
     private float RotationSpeed = 2;
     private const float MAX_TURN = MathF.PI / 2 - MathF.PI / 16;
     private const float MIN_TURN = -MathF.PI / 2 + MathF.PI / 16;
+    public (float, float) Bounds = (0f, 10000f);
 
     private Ball Next;
 
@@ -40,9 +41,7 @@ public partial class Shooter : Node2D
         {
             var ball = Ball_Scene.Instantiate<Ball>();
             ball.SetColor(Next.Ball_Color);
-            ball.Veclocity = Vector2.FromAngle(Rotation - MathF.PI / 2) * 200f;
-            ball.Position = Position;
-            ball.Active = true;
+            ball.Shoot(Position, Rotation, Bounds);
             CallDeferred(MethodName.AddSibling, ball);
 
             Game game = GetParentOrNull<Game>();

@@ -8,14 +8,16 @@ public partial class Arena : Node2D
     PackedScene Ball_Scene;
 
     private Grid grid;
-    private const int WIDTH = 10;
-    private const int HEIGHT = 10;
+    private int Width = 10;
+    private int Height = 10;
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public void Create(int width, int height, Vector2 size)
     {
-        grid = new Grid(new Vector2(14, 14), Position);
-        grid.CreateRectangular(WIDTH, HEIGHT);
+        Width = width;
+        Height = height;
+
+        grid = new Grid(size, Position);
+        grid.CreateRectangular(Width, Height);
 
         foreach (Hex hex in grid.GetHexes())
         {
@@ -26,9 +28,6 @@ public partial class Arena : Node2D
             CallDeferred(MethodName.AddSibling, ball);
         }
     }
-
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
 
     public void AddBall(Vector2 position, string color)
     {
@@ -96,10 +95,10 @@ public partial class Arena : Node2D
     public void RemoveUnconnected()
     {
         Grid topRowGen = new(new(1, 1), Position);
-        topRowGen.CreateRectangular(WIDTH, 1);
+        topRowGen.CreateRectangular(Width, 1);
         List<Hex> topRow = topRowGen.GetHexes();
 
-        List<Hex> matches = new List<Hex>();
+        List<Hex> matches = new();
 
         foreach (Hex hex in topRow)
         {

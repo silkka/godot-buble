@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Godot;
 
 public partial class Ball : Area2D
@@ -6,6 +7,7 @@ public partial class Ball : Area2D
     public Vector2 Veclocity = Vector2.Zero;
     public Ball_Colors Ball_Color;
     public bool Active = false;
+    private (float, float) Bounds = (0f, 10000f);
 
     [Signal]
     public delegate void HitEventHandler(Vector2 position, string color);
@@ -41,7 +43,33 @@ public partial class Ball : Area2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        Position += Veclocity * (float)delta;
+        if (!Active)
+        {
+            return;
+        }
+
+        Vector2 nextPos = Position + Veclocity * (float)delta;
+
+        if (nextPos.X - 7 < Bounds.Item1)
+        {
+            nextPos.X = Bounds.Item1 + 7;
+            Veclocity.X *= -1;
+        }
+        else if (nextPos.X + 7 > Bounds.Item2)
+        {
+            nextPos.X = Bounds.Item2 - 7;
+            Veclocity.X *= -1;
+        }
+
+        Position = nextPos;
+    }
+
+    public void Shoot(Vector2 position, float rotation, (float, float) bounds)
+    {
+        Position = position;
+        Veclocity = Vector2.FromAngle(rotation - MathF.PI / 2) * 200f;
+        Active = true;
+        Bounds = bounds;
     }
 
     public Ball SetRandomColor()
