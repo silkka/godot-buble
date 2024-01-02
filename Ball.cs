@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Godot;
 
@@ -11,6 +12,9 @@ public partial class Ball : Area2D
 
     [Signal]
     public delegate void HitEventHandler(Vector2 position, string color);
+
+    [Export]
+    int numberOfColors = 6;
 
     public enum Ball_Colors
     {
@@ -75,7 +79,9 @@ public partial class Ball : Area2D
     public Ball SetRandomColor()
     {
         Array colors = Enum.GetValues(typeof(Ball_Colors));
-        SetColor(Utils.PickRandomElement<Ball_Colors>(colors));
+        Array selection = Array.CreateInstance(typeof(Ball_Colors), numberOfColors);
+        Array.Copy(colors, selection, numberOfColors);
+        SetColor(Utils.PickRandomElement<Ball_Colors>(selection));
         return this;
     }
 

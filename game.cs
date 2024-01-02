@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using HexGrid;
 
@@ -17,6 +18,7 @@ public partial class Game : Node2D
     Vector2 Size = new(14, 14);
 
     private int shots = 0;
+    private Edges edges;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -25,9 +27,19 @@ public partial class Game : Node2D
         shooter = GetNode<Shooter>("Shooter");
 
         arena.Create(Width, Height, Size);
-        float leftEdge = arena.Position.X - 12;
-        float rightEdge = leftEdge + Width * 12 * 2;
-        shooter.Bounds = (leftEdge, rightEdge);
+
+        const int ballRadius = 12;
+
+        edges = new()
+        {
+            Left = arena.Position.X - ballRadius,
+            Right = arena.Position.X - ballRadius + Width * ballRadius * 2,
+            Top = arena.Position.Y - ballRadius,
+            Botttom = arena.Position.Y + (Height + 8) * ballRadius * 2
+        };
+
+        shooter.Bounds = (edges.Left, edges.Right);
+        shooter.Position = new Vector2((edges.Left + edges.Right) / 2, edges.Botttom);
 
         GD.Print(shooter.Bounds.Item1, ", ", shooter.Bounds.Item2);
     }
@@ -54,6 +66,18 @@ public partial class Game : Node2D
         {
             arena.ShiftDown();
         }
+
+        if (arena.OutOfBounds(edges.Botttom))
+        {
+            GD.Print("Game Over");
+            GetTree().Quit();
+        }
+
+        if (arena.Victory())
+        {
+            GD.Print("You Win!");
+            GetTree().Quit();
+        }
     }
 
     public override void _Draw()
@@ -73,5 +97,20 @@ public partial class Game : Node2D
             new Vector2(shooter.Bounds.Item2 + 6, 1000),
             Colors.White
         );
+
+        // Draw bottom edge
+        DrawLine(
+            new Vector2(shooter.Bounds.Item1 - 6, edges.Botttom + 6),
+            new Vector2(shooter.Bounds.Item2 + 6, edges.Botttom + 6),
+            Colors.White
+        );
     }
+}
+
+struct Edges
+{
+    public float Left;
+    public float Right;
+    public float Top;
+    public float Botttom;
 }

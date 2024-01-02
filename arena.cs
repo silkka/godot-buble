@@ -127,4 +127,22 @@ public partial class Arena : Node2D
             ball.Position = Layout.HexToPixel(grid.layout, hex);
         }
     }
+
+    public bool OutOfBounds(float bottom)
+    {
+        foreach (Hex hex in grid.GetHexes())
+        {
+            Ball ball = grid.Get(hex);
+            if (ball.Position.Y + 12 > bottom)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool Victory()
+    {
+        return grid.GetHexes().Count == 0;
+    }
 }
