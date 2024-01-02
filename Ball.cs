@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using Godot;
 
 public partial class Ball : Area2D
