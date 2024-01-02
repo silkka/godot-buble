@@ -16,6 +16,8 @@ public partial class Game : Node2D
     [Export]
     Vector2 Size = new(14, 14);
 
+    private int shots = 0;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -47,6 +49,11 @@ public partial class Game : Node2D
     public void OnHit(Vector2 position, string color)
     {
         arena.AddBall(position, color);
+        shots++;
+        if (shots % 5 == 0)
+        {
+            arena.ShiftDown();
+        }
     }
 
     public override void _Draw()
